@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts.min.js"></script>
+    <style>
+        body{
+            margin:0px;
+            }
+        #header{
+            font-size:30px;
+            background:#393D49;
+            color:#fff;
+        }
+        #header1{
+            margin-left:400px;
+        }
+        span{
+            cursor: pointer;
+            padding:0 30px 0 30px;
+        }
+        span:hover{
+            background-color: yellow;
+        }
+        .hidden{
+            display: none;
+        }
+        table,td,th{
+            border-collapse:collapse;
+            text-align:center;
+            vertical-align:middle;
+            margin-left:340px;
+            margin:0px auto;
+        }
+    </style>
+    <script>
+        function showDiv(str) {
+                var divs = [];
+                for(var i = 0;i < 3;i++) {
+                    divs[i] = document.getElementById("div" + i);
+                    divs[i].style.display = "none";
+                }
+                document.getElementById(str).style.display = "block";
+            }
+    </script>
+</head>
+<body>
+<div id="header">
+    <span id="header1" onclick="showDiv('div0');">分省本科招生</span>
+    <span onclick="showDiv('div1');">财政</span>
+    <span onclick="showDiv('div2');">第三产业</span>
+</div>
+<p>数据：分省本科招生人数、国家财政教育投资、国家分省第三产业产值</p>
+<p>数据来源：国家数据统计局</p>
+<div id="div0">
+    <h1 align="center">本科的人数数据</h1>
+    {% for table in tables %}
+        <!--{{titles[loop.index]}}-->
+        {{ table|safe }}
+    {% endfor %}
+    <p>地区:{{variable.name}}</p>
+
+    <div id ="city_num">
+        {% for row in city_va.num %}
+        <p>{{ row }}</p>
+    {% endfor %}
+    </div>
+    <h2 align="center">表一</h2>
+    <div>
+      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+      <div id="main" style="width: 900px;height:700px;margin:0px auto;"></div>
+      <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption({{ bar_data | safe }});
+      </script>
+    </div>
+    <h2 align="center">表二</h2>
+    <div>
+      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+      <div id="main2" style="width: 900px;height:700px;margin:0px auto;"></div>
+      <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main2'));
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption({{ bar_data2 | safe }});
+      </script>
+    </div>
+    <h2 align="center"> 数据故事</h2>
+    <div style="width:700px;margin:0 auto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;拉出几个对比的省份，本科的发展人数每年都是趋于上升，而西北地区发展倒是较为的缓慢，基数也比较小，相对于中西部地区的本科高素质人才较少（具体的可以见下图），对比于多张图，可以发现，西部地区教学发展极为缓慢。而沿海城市发展是比较迅速的，教育人口基数大，本科人数较多。</div>
+    <h2 align="center">表三</h2>
+    <div>
+      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+      <div id="main3" style="width: 900px;height:300px;margin:0px auto;"></div>
+      <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main3'));
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption({{ bar_data3 | safe }});
+      </script>
+    </div>
+</div>
+<div id="div1" class="hidden">
+    <h1 align="center">国家分省财政教育的支出数据</h1>
+    {% for table in table1s %}
+        <!--{{title1s[loop.index]}}-->
+        {{ table|safe }}
+    {% endfor %}
+    <h2 align="center">表一</h2>
+    <div>
+      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+      <div id="main4" style="width: 900px;height:700px;margin:0px auto;"></div>
+      <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main4'));
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption({{ bar_data4 | safe }});
+      </script>
+    </div>
+    <h2 align="center"> 数据故事</h2>
+    <div style="width:700px;margin:0 auto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;由折线图可知，部分省份的国家教育财政支出是上升的事态，一年比一年的投资量变大，东部地区更是如此，一直不断地增长，投资的基数也较大。较此处与本科人数对比，教育财政的投资是与本科高素质人才的发展成正比。中西部地区的财政投资相对于较少，也造成了本科人数也较少。</div>
+</div>
+<div id="div2" class="hidden">
+    <h1 align="center">第三产业的数据</h1>
+    {% for table in table2s %}
+        <!--{{title2s[loop.index]}}-->
+        {{ table|safe }}
+    {% endfor %}
+    <p>地区:{{variable1.name}}</p>
+    <div id ="city_num1">
+        {% for row in city_va1.num1 %}
+        <p>{{ row }}</p>
+    {% endfor %}
+    </div>
+    <!--<h2 >表一</h2>-->
+    <!--<div>-->
+      <!--&lt;!&ndash; 为ECharts准备一个具备大小（宽高）的Dom &ndash;&gt;-->
+      <!--<div id="main5" style="width: 900px;height:700px;"></div>-->
+      <!--<script type="text/javascript">-->
+        <!--// 基于准备好的dom，初始化echarts实例-->
+        <!--var myChart = echarts.init(document.getElementById('main5'));-->
+        <!--// 使用刚指定的配置项和数据显示图表。-->
+        <!--myChart.setOption({{ bar_data5 | safe }});-->
+      <!--</script>-->
+    <!--</div>-->
+    <h2 align="center">表一</h2>
+    <div>
+      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+      <div id="main6" style="width: 900px;height:700px;margin:0px auto;"></div>
+      <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main6'));
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption({{ bar_data6 | safe }});
+      </script>
+    </div>
+    <h2 align="center">表二</h2>
+    <div>
+      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+      <div id="main7" style="width: 900px;height:300px;margin:0px auto;"></div>
+      <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main7'));
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption({{ bar_data7 | safe }});
+      </script>
+    </div>
+    <h2 align="center"> 数据故事</h2>
+    <div style="width:700px;margin:0 auto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;依据国家第三产业的产值可知，图见上折线统计图。广东的产值是飞速上升，每一年都在激进，上升趋势非常的迅猛。然后我们看到新疆和内蒙古还有甘肃地区，这些都是西部和西南地区，第三产业即服务业，是指除第一产业、第二产业以外的其他行业。 第三产业包括：交通运输、仓储和邮政业，信息传输、计算机服务和软件业，批发和零售业，住宿和餐饮业，金融业，房地产业，租赁和商务服务业，科学研究、技术服务和地质勘查业，水利、环境和公共设施管理业，居民服务和其他服务业，教育，卫生、社会保障和社会福利业，文化、体育和娱乐业，公共管理和社会组织，国际组织等行业。第三产业与人才素质还有人口基数和经济因素有关。而新疆等地区的发展趋势非常的缓慢，近些年还有着下降的趋势，与本科高素质人才息息相关，就像是上面说到的新疆、甘肃、内蒙古地区高素质人才的不断减少，无法给予业界优秀的人才，导致第三产业发展降低，产值下降。而反观广东地区，随着高素质人才的不断提高，人才补给迅猛，第三产业经济发展也是相当的迅猛。</div>
+    <h2 align="center"> 总结</h2>
+    <div style="width:700px;margin:0 auto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总的来说，总共有3个结论 1、我国本科高素质人才在每个省分每一年都在增加，东部沿海地区更是增长迅速，这个与经济的基础和家庭观念有关系。而我国的教育财政支出也是每一年在增加，在东部沿海地区教育财政支出是非常多的，增长趋势也是非常迅猛，从而间接使东部沿海地区教育模块发展迅速。而西部地区教育发展较为缓慢，教育财政也是相对较少，所以付出就能得到回报。 2、第三产业使服务业为基础，而服务业，大多都是有素质较高的人群去从事，这个依据数据对比，的确是有联系的。拿西部地区做对比，他们的第三产业产值非但发展缓慢，而且近年还有着下降趋势。反观东部地区，发展极为的迅速，由此观之，高素质人才是可以影响第三产业的发展。国家需要重视人才培养和人才引进，促进中西部地区的发展。</div>
+</div>
+</body>
+</html>
